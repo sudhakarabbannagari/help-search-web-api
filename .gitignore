@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Help.Search.Heroku.Api/.vs
+/Help.Search.Heroku.Api/Help.Search.Heroku.Api/bin/Debug/net8.0
+/Help.Search.Heroku.Api/Help.Search.Heroku.Api/obj
