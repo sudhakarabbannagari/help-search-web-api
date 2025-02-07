@@ -17,27 +17,24 @@ namespace Help.Search.Heroku.Api.Repository
         }
         public async Task<string> GenerateTokenAsync(string username)
         {
-            //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-            var key = Encoding.ASCII.GetBytes(_configuration["JWT:Key"]);
-           
-            var tokenDescriptor = new SecurityTokenDescriptor
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, username),
-                    new Claim(ClaimTypes.Role, "Admin")
-                }),
-                IssuedAt = DateTime.UtcNow,
-                Issuer = _configuration["JWT:Issuer"],
-                Audience = _configuration["JWT:Audience"],
-                Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:ExpireMinutes"])),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-            };
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            //return await Task.Run(() => new JwtSecurityTokenHandler().WriteToken(token));
-            return await Task.Run(() => tokenHandler.WriteToken(token));
-            
+            new Claim(JwtRegisteredClaimNames.Sub, username),
+            new Claim(JwtRegisteredClaimNames.UniqueName, username),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWT:Issuer"],
+                audience: _configuration["JWT:Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:ExpireMinutes"])),
+                signingCredentials: credentials);
+
+            return await Task.Run(() => new JwtSecurityTokenHandler().WriteToken(token));
         }
     }
 }
