@@ -51,7 +51,7 @@ builder.Services.AddSwaggerGen(c => {
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
         Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
+        Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
@@ -69,6 +69,7 @@ builder.Services.AddSwaggerGen(c => {
         }
     });
 });
+builder.Services.AddSingleton<ElasticSearchRepository>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<IHelpSearchRepository, HelpSearchRepository>();
 builder.Services.AddCors(options => options.AddPolicy("Cors", builder =>

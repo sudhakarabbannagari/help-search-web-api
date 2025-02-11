@@ -6,10 +6,10 @@ namespace Help.Search.Heroku.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    //[Authorize]
+    [Authorize]
     public class HelpSearchController : ControllerBase
     {
-        
+
         private readonly ILogger<HelpSearchController> _logger;
         private readonly ITokenRepository _tokenReposity;
         private readonly IHelpSearchRepository _searchRepository;
@@ -47,7 +47,7 @@ namespace Help.Search.Heroku.Api.Controllers
             }
             return Unauthorized();
         }
-       
+
 
     }
 
