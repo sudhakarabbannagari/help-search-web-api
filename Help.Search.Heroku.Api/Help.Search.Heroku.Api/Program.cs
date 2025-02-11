@@ -69,7 +69,7 @@ builder.Services.AddSwaggerGen(c => {
         }
     });
 });
-builder.Services.AddSingleton<ElasticSearchRepository>();
+
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<IHelpSearchRepository, HelpSearchRepository>();
 builder.Services.AddCors(options => options.AddPolicy("Cors", builder =>
